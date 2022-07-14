@@ -3,6 +3,7 @@ pipeline {
     environment {
       DOCKERHUB_CREDENTIALS = credentials('docker-hub-rusucristian')
       REGISTRY_NAME = "rusucristian/nodejs-test"
+      NEXT_VERSION = "${env.BUILD_ID}"
     }
     stages {
         stage('SCM Checkout') {
@@ -13,7 +14,7 @@ pipeline {
 
         stage('Build docker image') {
             steps {
-                sh 'docker build -t $REGISTRY_NAME:$BUILD_NUMBER .'
+                sh "docker build -t ${REGISTRY_NAME}:${NEXT_VERSION} ."
             }
         }
         stage('login to dockerhub') {
@@ -23,13 +24,15 @@ pipeline {
         }
         stage('push image') {
             steps{
-                sh 'docker push $REGISTRY_NAME:$BUILD_NUMBER'
+                sh "docker push ${REGISTRY_NAME}:${NEXT_VERSION}"
             }
         }
-}
-post {
-        always {
-            sh 'docker logout'
-        }
+    }
+
+    post {
+      always {
+        sh 'docker logout'
+        sh "docker rmi -f ${REGISTRY_NAME}:${NEXT_VERSION}"
+      }
     }
 }
