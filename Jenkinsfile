@@ -3,7 +3,7 @@ pipeline {
     environment {
       DOCKERHUB_CREDENTIALS = credentials('docker-hub-rusucristian')
       REGISTRY_NAME = "rusucristian/nodejs-test"
-      NEXT_VERSION = "${env.BUILD_ID}"
+      NEXT_VERSION = "1.0"
     }
     stages {
         stage('SCM Checkout') {
