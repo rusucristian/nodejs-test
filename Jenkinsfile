@@ -6,11 +6,6 @@ pipeline {
       NEXT_VERSION = "1.0"
     }
     stages {
-        stage('SCM Checkout') {
-            steps{
-            git 'https://github.com/rusucristian/nodejs-test.git'
-            }
-        }
 
         stage('Build docker image') {
             steps {
